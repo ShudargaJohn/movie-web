@@ -6,7 +6,24 @@ import { Goggle } from "@/components/Goggle";
 import { DropDownSvg } from "@/components/dropdown";
 
 import { BigStarSvg } from "@/components/bigStarSvg";
+import { Play } from "@/components/play";
+import useSWR from "swr";
 const Haha = () => {
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const token =
+    "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNjdkOGJlYmQwZjRmZjM0NWY2NTA1Yzk5ZTlkMDI4OSIsIm5iZiI6MTc0MjE3NTA4OS4zODksInN1YiI6IjY3ZDc3YjcxODVkMTM5MjFiNTAxNDE1ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KxFMnZppBdHUSz_zB4p9A_gRD16I_R6OX1oiEe0LbE8";
+  const { data, error, isLoading } = useSWR(
+    "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
+    (url) => fetcher(url, { headers: { authorization: `Bearer ${token}` } })
+  );
+
+  if (error) {
+    return <div>aldaa</div>;
+  }
+
+  if (isLoading) {
+    return <div>unshij bn</div>;
+  }
   return (
     <div>
       <div className="mb-[59px]">
@@ -36,12 +53,11 @@ const Haha = () => {
           </div>
         </div>
       </div>
-      <div className=" first-section">
-        <div
-          className="h-screen bg-center bg-cover first-container"
-          // style=" background-image:./image/first.png"
-          style={{ backgroundImage: `url('./images/first.png')` }}
-        >
+      <div
+        className=" first-section flex justify-center bg-cover bg-center"
+        style={{ backgroundImage: `url('./images/first.png')` }}
+      >
+        <div className="h-screen bg-center bg-cover first-container w-[70%] flex flex-col justify-center">
           <p className="font-normal text-[16px] text-white">Now playing:</p>
           <p className="font-bold  text-[36px] text-white">Wicked</p>
           <div className="flex">
@@ -57,7 +73,10 @@ const Haha = () => {
             Land of Oz. After an encounter with the Wonderful Wizard of Oz,
             their friendship reaches a crossroads.{" "}
           </p>
-          <button>Watch Trailer</button>
+          <div className=" flex h-[40px] bg-white w-[145px] rounded-md justify-center items-center">
+            <Play />
+            <p>Watch Trailer</p>
+          </div>
         </div>
       </div>
       <div className="main-section">
@@ -67,10 +86,10 @@ const Haha = () => {
             <p>See More</p>
           </div>
           <div className="flex flex-wrap ">
-            {Data.map((el) => {
+            {data.results.map((el) => {
               return (
                 <Card
-                  image={el.imageUrl}
+                  image={el.poster_path}
                   vote={el.vote_average}
                   name={el.original_title}
                 />

@@ -8,6 +8,7 @@ import { DropDownSvg } from "@/components/dropdown";
 import { BigStarSvg } from "@/components/bigStarSvg";
 import { Play } from "@/components/play";
 import useSWR from "swr";
+import { Arrow } from "@/components/arrow";
 const Haha = () => {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const token =
@@ -57,7 +58,7 @@ const Haha = () => {
         className=" first-section flex justify-center bg-cover bg-center"
         style={{ backgroundImage: `url('./images/first.png')` }}
       >
-        <div className="h-screen bg-center bg-cover first-container w-[70%] flex flex-col justify-center">
+        <div className="h-screen bg-center bg-cover first-container w-[75%] flex flex-col justify-center">
           <p className="font-normal text-[16px] text-white">Now playing:</p>
           <p className="font-bold  text-[36px] text-white">Wicked</p>
           <div className="flex">
@@ -79,14 +80,17 @@ const Haha = () => {
           </div>
         </div>
       </div>
-      <div className="main-section">
-        <div className="main-container">
-          <div className="flex justify-between ">
-            <p>Upcoming</p>
-            <p>See More</p>
+      <div className="main-section w-screen justify-center">
+        <div className="main-container flex flex-col items-center ">
+          <div className="flex justify-between w-[89%]">
+            <p className=" font-semibold text-[24px]">Upcoming</p>
+            <div className=" flex items-center gap-[8px]">
+              <p>See more</p>
+              <Arrow />
+            </div>
           </div>
-          <div className="flex flex-wrap ">
-            {data.results.map((el) => {
+          <div className="grid  grid-cols-5 grid-rows-2 justify-center">
+            {data.results.slice(0, 10).map((el) => {
               return (
                 <Card
                   image={el.poster_path}
